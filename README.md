@@ -4,7 +4,7 @@
 
 Submitted by: **Willie Owens**
 
-Time spent: **1** hours spent in total
+Time spent: **2** hours spent in total
 
 ## User Stories
 
@@ -37,11 +37,12 @@ GIF created in Ubuntu with [Silentcast](https://github.com/colinkeenan/silentcas
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Describe any challenges encountered while building the app:
+* I was unable to show/hide the keyboard and tabled that issue. Several suggestions online did not seem to work - at least in AndroidStudio using a Nexus 5 emulator.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2016] [Willie Owens]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
