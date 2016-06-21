@@ -31,7 +31,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/vSUOISf.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/vSUOISf.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created in Ubuntu with [Silentcast](https://github.com/colinkeenan/silentcast).
 

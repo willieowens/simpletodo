@@ -1,6 +1,9 @@
 package com.codepath.simpletodo;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
@@ -8,10 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
@@ -19,11 +24,12 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> items;
-    ArrayAdapter<String> itemsAdapter;
+    List<TodoItem> items;
+    ItemAdapter itemsAdapter;
     ListView lvItems;
     public static final int RESULT_EDITED_ITEM = 1;
 
@@ -34,10 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
         lvItems = (ListView) findViewById(R.id.lvItems);
         readItems();
-        itemsAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ItemAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
+
+        // TODO: Hide keyboard until user wants to add an item
+//        View view = this.getCurrentFocus();
+//        if (view != null) {
+//            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//        }
     }
 
     private void setupListViewListener() {
@@ -56,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        AppCompatTextView et = (AppCompatTextView) view;
+                        TextView et = (TextView) view.findViewById(R.id.text);
                         String itemText = et.getText().toString();
                         Intent editItemIntent = new Intent(getApplicationContext(), EditItemActivity.class);
                         editItemIntent.putExtra(EditItemActivity.EXTRA_ITEM_INDEX, position);
@@ -73,30 +85,20 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == RESULT_EDITED_ITEM) {
             int itemIndex = data.getIntExtra(EditItemActivity.EXTRA_ITEM_INDEX, 0);
             String itemText = data.getStringExtra(EditItemActivity.EXTRA_ITEM_TEXT);
-            items.set(itemIndex, itemText);
+            TodoItem item = items.get(itemIndex);
+            item.setText(itemText);
+            // TODO: due date
             itemsAdapter.notifyDataSetChanged();
             writeItems();
         }
     }
 
     private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt") ;
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            items = new ArrayList<String>();
-        }
+        items = TodoItemDb.getInstance(getApplicationContext()).getItems();
     }
 
     private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt") ;
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        TodoItemDb.getInstance(getApplicationContext()).writeItems(items);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
+        itemsAdapter.add(new TodoItem(itemText));
         etNewItem.setText("");
         writeItems();
     }

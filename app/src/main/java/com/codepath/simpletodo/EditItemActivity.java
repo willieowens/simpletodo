@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -34,7 +32,12 @@ public class EditItemActivity extends AppCompatActivity {
         etEditItem = (EditText) findViewById(R.id.etEditItem);
         etEditItem.setText(editText);
         etEditItem.setSelection(editText.length());
+
         etEditItem.requestFocus();
+
+        // TODO: Have keyboard open upon first activity load
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(etEditItem, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void onSaveItem(View v) {
