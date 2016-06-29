@@ -4,48 +4,88 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class EditItemActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ITEM_INDEX = "itemIndex";
-    public static final String EXTRA_ITEM_TEXT = "itemText";
+    public static final String EXTRA_ITEM_INDEX = "item_index";
+    public static final String EXTRA_ITEM = "item";
 
+    private TodoItem item;
     private int itemIndex;
-    EditText etEditItem;
+
+    private EditText etEditItem;
+    private DatePicker datePicker;
+    private Spinner spPriority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
 
+        item = (TodoItem) getIntent().getSerializableExtra(EXTRA_ITEM);
         itemIndex = getIntent().getIntExtra(EXTRA_ITEM_INDEX, 0);
-        setEditItemText();
+        configureEditableItem();
     }
 
-    private void setEditItemText() {
-        String editText = getIntent().getStringExtra(EXTRA_ITEM_TEXT);
+    private void configureEditableItem() {
+        String editText = item.getText();
+
         etEditItem = (EditText) findViewById(R.id.etEditItem);
         etEditItem.setText(editText);
         etEditItem.setSelection(editText.length());
 
-        etEditItem.requestFocus();
+        // TODO: allow user to not choose a date (and make the datepicker look a lot better)
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        String dueDate = item.getDueDate();
+        if (dueDate != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(TodoItem.DUE_DATE_FORMAT);
+            Date date = new Date();
+            try {
+                date = sdf.parse(dueDate);
+            } catch (ParseException e) {
+                Log.w(getClass().getSimpleName(), "Failed to parse due date, '" + dueDate + "' using format " + TodoItem.DUE_DATE_FORMAT);
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            datePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        }
 
-        // TODO: Have keyboard open upon first activity load
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.showSoftInput(etEditItem, InputMethodManager.SHOW_IMPLICIT);
+        spPriority = (Spinner) findViewById(R.id.spinnerPriority);
+        ArrayAdapter<TodoItem.Priority> priorityAdapter = new ArrayAdapter<TodoItem.Priority>(
+                this, android.R.layout.simple_list_item_1, TodoItem.Priority.values());
+        spPriority.setAdapter(priorityAdapter);
+        int priorityIndex = item.getPriority().ordinal();
+        spPriority.setSelection(priorityIndex);
     }
 
     public void onSaveItem(View v) {
         String itemText = etEditItem.getText().toString();
+        String dueDate = (datePicker.getMonth()+1) + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear();
+        TodoItem.Priority priority = (TodoItem.Priority) spPriority.getSelectedItem();
+
+        item.setText(itemText);
+        item.setDueDate(dueDate);
+        item.setPriority(priority);
+
         Intent result = new Intent();
+        result.putExtra(EXTRA_ITEM, item);
         result.putExtra(EXTRA_ITEM_INDEX, itemIndex);
-        result.putExtra(EXTRA_ITEM_TEXT, itemText);
         setResult(MainActivity.RESULT_OK, result);
+
         finish();
     }
 

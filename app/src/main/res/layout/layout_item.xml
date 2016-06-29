@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
     
     <TextView
         android:id="@+id/dueDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:textSize="@dimen/abc_text_size_small_material"
+        android:gravity="center_vertical"
         android:layout_weight="1"
-        android:text="N/A" />
+        android:text="dueDate" />
 
     <TextView
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="placeholder" />
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:textSize="@dimen/abc_text_size_small_material"
+        android:gravity="center_vertical"
+        android:layout_weight="2"
+        android:text="todoItemText" />
+
+    <TextView
+        android:id="@+id/priority"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:textSize="@dimen/abc_text_size_small_material"
+        android:gravity="center_vertical|right"
+        android:layout_weight="1"
+        android:text="priority" />
 
 </LinearLayout>
