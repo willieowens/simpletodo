@@ -1,90 +1,76 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="#E3F2FD"
     tools:context="com.codepath.simpletodo.EditItemActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/etEditItem"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btnEditItem"
-        android:layout_toStartOf="@+id/btnEditItem" />
+        android:id="@+id/editForm">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Todo Item:"
+            android:id="@+id/tvItemTextLabel" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:id="@+id/etEditItem" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Due Date:"
+            android:id="@+id/tvDueDateLabel" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:inputType="date"
+            android:id="@+id/etDueDate"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_event_black_16dp"
+            android:id="@+id/btnDatePicker"
+            android:onClick="showDatePickerDialog" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Priority:"
+            android:id="@+id/textView"/>
+
+        <Spinner
+            android:id="@+id/spinnerPriority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </TableLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"
         android:id="@+id/btnEditItem"
         android:onClick="onSaveItem"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Due Date:"
-        android:id="@+id/tvDueDateLabel"
-        android:layout_below="@+id/etEditItem"
-        android:layout_alignTop="@+id/etDueDate"
-        android:layout_alignBottom="@+id/etDueDate"
-        android:gravity="center_vertical"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusable="false"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/etDueDate"
-        android:layout_below="@+id/etEditItem"
-        android:layout_toRightOf="@+id/tvDueDateLabel"
-        android:layout_toEndOf="@+id/tvDueDateLabel" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_event_black_16dp"
-        android:id="@+id/btnDatePicker"
-        android:onClick="showDatePickerDialog"
-        android:layout_below="@+id/btnEditItem"
-        android:layout_toRightOf="@+id/etDueDate"
-        android:layout_toEndOf="@+id/etDueDate"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Priority:"
-        android:id="@+id/textView"
-        android:layout_alignTop="@+id/spinnerPriority"
-        android:layout_alignBottom="@+id/spinnerPriority"
-        android:gravity="center_vertical"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:id="@+id/spinnerPriority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDueDateLabel"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView" />
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
