@@ -1,5 +1,6 @@
 package com.codepath.simpletodo;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ public class EditItemActivity extends AppCompatActivity {
     private int itemIndex;
 
     private EditText etEditItem;
-    private DatePicker datePicker;
+    private EditText etDueDate;
     private Spinner spPriority;
 
     @Override
@@ -49,9 +50,10 @@ public class EditItemActivity extends AppCompatActivity {
         etEditItem.setSelection(editText.length());
 
         // TODO: allow user to not choose a date (and make the datepicker look a lot better)
-        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        etDueDate = (EditText) findViewById(R.id.etDueDate);
         String dueDate = item.getDueDate();
-        if (dueDate != null) {
+        etDueDate.setText(dueDate);
+        /*if (dueDate != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(TodoItem.DUE_DATE_FORMAT);
             Date date = new Date();
             try {
@@ -62,7 +64,7 @@ public class EditItemActivity extends AppCompatActivity {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             datePicker.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        }
+        }*/
 
         spPriority = (Spinner) findViewById(R.id.spinnerPriority);
         ArrayAdapter<TodoItem.Priority> priorityAdapter = new ArrayAdapter<TodoItem.Priority>(
@@ -74,7 +76,7 @@ public class EditItemActivity extends AppCompatActivity {
 
     public void onSaveItem(View v) {
         String itemText = etEditItem.getText().toString();
-        String dueDate = (datePicker.getMonth()+1) + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear();
+        String dueDate = etDueDate.getText().toString();
         TodoItem.Priority priority = (TodoItem.Priority) spPriority.getSelectedItem();
 
         item.setText(itemText);
@@ -87,6 +89,12 @@ public class EditItemActivity extends AppCompatActivity {
         setResult(MainActivity.RESULT_OK, result);
 
         finish();
+    }
+
+    public void showDatePickerDialog(View v) {
+        DueDatePickerFragment datePickerFragment = new DueDatePickerFragment();
+        datePickerFragment.setDueDateText(etDueDate);
+        datePickerFragment.show(getFragmentManager(), "dueDatePicker");
     }
 
     @Override
