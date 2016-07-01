@@ -4,7 +4,7 @@
 
 Submitted by: **Willie Owens**
 
-Time spent: **2** hours spent in total
+Time spent: **5** hours spent in total
 
 ## User Stories
 
@@ -27,6 +27,8 @@ The following **additional** features are implemented:
 
 * [X] Require non-empty string to add an item - Toast displayed when requirement not satisfied
 * [X] Display toast confirmation when deleting an item
+* [X] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) for due date DatePicker
+* [X] Sort columns upon header click
 
 ## Video Walkthrough 
 

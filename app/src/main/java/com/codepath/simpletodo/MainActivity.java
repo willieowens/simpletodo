@@ -13,6 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     ItemAdapter itemsAdapter;
     ListView lvItems;
     public static final int RESULT_EDITED_ITEM = 1;
+
+    private int sortColumn = -1;
+    private boolean mainSortDirection = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +88,106 @@ public class MainActivity extends AppCompatActivity {
             updateItem(item);
         }
     }
+
+
+    private boolean isEmpty(String s) {
+        return (s == null || s.length() == 0);
+    }
+
+
+    public void toggleDueDateSort(View v) {
+//        Toast.makeText(getApplication(), "Toggling due date sort", Toast.LENGTH_SHORT).show();
+
+        if (sortColumn != 1) {
+            sortColumn = 1;
+            mainSortDirection = true;
+        }
+
+        final SimpleDateFormat sdf = new SimpleDateFormat(TodoItem.DUE_DATE_FORMAT);
+        final int sortDir = mainSortDirection ? 1 : -1;
+
+        Collections.sort(items, new Comparator<TodoItem>() {
+            @Override
+            public int compare(TodoItem lhs, TodoItem rhs) {
+                String lDueDate = lhs.getDueDate();
+                String rDueDate = rhs.getDueDate();
+                if (isEmpty(lDueDate)) {
+                    if (isEmpty(rDueDate)) {
+                        return 0;
+                    }
+                    return 1 * sortDir;
+                } else if (isEmpty(rDueDate)) {
+                    return -1 * sortDir;
+                }
+
+                try {
+                    return sdf.parse(lDueDate).compareTo(sdf.parse(rDueDate)) * sortDir;
+                } catch (ParseException e) {
+                    return 0;
+                }
+            }
+        });
+
+        itemsAdapter.notifyDataSetChanged();
+        mainSortDirection = !mainSortDirection;
+    }
+
+    public void toggleItemTextSort(View v) {
+//        Toast.makeText(getApplication(), "Toggling item text sort", Toast.LENGTH_SHORT).show();
+
+        if (sortColumn != 2) {
+            sortColumn = 2;
+            mainSortDirection = true;
+        }
+
+        final int sortDir = mainSortDirection ? 1 : -1;
+
+        Collections.sort(items, new Comparator<TodoItem>() {
+            @Override
+            public int compare(TodoItem lhs, TodoItem rhs) {
+                String lText = lhs.getText();
+                String rText = rhs.getText();
+                if (isEmpty(lText)) {
+                    if (isEmpty(rText)) {
+                        return 0;
+                    }
+                    return 1*sortDir;
+                } else if (isEmpty(rText)) {
+                    return -1*sortDir;
+                }
+
+                return lText.compareTo(rText)*sortDir;
+            }
+        });
+
+        itemsAdapter.notifyDataSetChanged();
+        mainSortDirection = !mainSortDirection;
+    }
+
+    public void togglePrioritySort(View v) {
+//        Toast.makeText(getApplication(), "Toggling priority sort", Toast.LENGTH_SHORT).show();
+
+        if (sortColumn != 3) {
+            sortColumn = 3;
+            mainSortDirection = true;
+        }
+
+        final int sortDir = mainSortDirection ? 1 : -1;
+
+        Collections.sort(items, new Comparator<TodoItem>() {
+            @Override
+            public int compare(TodoItem lhs, TodoItem rhs) {
+                TodoItem.Priority lPriority = lhs.getPriority();
+                TodoItem.Priority rPriority = rhs.getPriority();
+
+                return (rPriority.ordinal()-lPriority.ordinal())*sortDir;
+            }
+        });
+
+        itemsAdapter.notifyDataSetChanged();
+        mainSortDirection = !mainSortDirection;
+    }
+
 
     private void readItems() {
         items = TodoItemDbHelper.getInstance(getApplicationContext()).getItems();
