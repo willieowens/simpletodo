@@ -36,12 +36,26 @@
             android:text="Due Date:"
             android:id="@+id/tvDueDateLabel" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:inputType="date"
-            android:id="@+id/etDueDate"/>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="date"
+                android:layout_weight="1"
+                android:id="@+id/etDueDate"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:onClick="clearDueDateText"
+                android:id="@+id/button" />
+        </TableRow>
 
         <ImageButton
             android:layout_width="wrap_content"

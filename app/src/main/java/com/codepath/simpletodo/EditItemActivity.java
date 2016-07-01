@@ -91,6 +91,10 @@ public class EditItemActivity extends AppCompatActivity {
         finish();
     }
 
+    public void clearDueDateText(View v) {
+        etDueDate.setText(null);
+    }
+
     public void showDatePickerDialog(View v) {
         DueDatePickerFragment datePickerFragment = new DueDatePickerFragment();
         datePickerFragment.setDueDateText(etDueDate);
