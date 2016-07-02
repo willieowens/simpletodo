@@ -1,5 +1,7 @@
 package com.codepath.simpletodo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,12 +55,26 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        TodoItem deletedItem = items.remove(position);
-                        deleteItem(deletedItem);
-                        Toast toast = Toast.makeText(parent.getContext(), "Deleted '" + deletedItem.getText() + "'", Toast.LENGTH_SHORT);
-                        toast.show();
-                        itemsAdapter.notifyDataSetChanged();
+                    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setMessage("Delete '" + items.get(position).getText() + "'?")
+                                .setTitle("Confirm Delete");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                TodoItem deletedItem = items.remove(position);
+                                deleteItem(deletedItem);
+                                Toast toast = Toast.makeText(parent.getContext(), "Deleted '" + deletedItem.getText() + "'", Toast.LENGTH_SHORT);
+                                toast.show();
+                                itemsAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", null);
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
                         return true;
                     }
                 }
