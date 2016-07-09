@@ -41,7 +41,7 @@ public class ItemAdapter extends ArrayAdapter<TodoItem> {
         String dueDateStr = item.getDueDate();
         tvDueDate.setText(dueDateStr);
         boolean isDue = false;
-        if (dueDateStr != null) {
+        if (dueDateStr != null && !dueDateStr.isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat(TodoItem.DUE_DATE_FORMAT);
             try {
                 Date dueDate = sdf.parse(dueDateStr);
