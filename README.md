@@ -30,6 +30,7 @@ The following **additional** features are implemented:
 * [X] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) for due date DatePicker
 * [X] Sort columns upon header click
 * [X] AlertDialog to confirm todo item deletion
+* [X] Clear button to remove a due date from an item
 
 ## Video Walkthrough 
 
